@@ -15,7 +15,8 @@
       --primary-light: #e0f2fe;
       --secondary: #22c1c3;
       --success: #10b981;
-      --success-light: #d1fae5;
+      --info: #3b82f6;
+      --info-light: #dbeafe;
       --error: #ef4444;
       --text: #1f2937;
       --text-secondary: #6b7280;
@@ -76,6 +77,40 @@
       opacity: 0.95;
     }
     
+    /* Important Notice */
+    .notice {
+      margin: 24px 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--info-light) 0%, #bfdbfe 100%);
+      border-right: 4px solid var(--info);
+      border-radius: 12px;
+      animation: slideDown 0.5s;
+    }
+    
+    .notice-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+    
+    .notice-icon {
+      font-size: 1.5rem;
+    }
+    
+    .notice-text {
+      font-size: 0.95rem;
+      color: #1e40af;
+      line-height: 1.6;
+    }
+    
+    .notice-text strong {
+      color: #1e3a8a;
+    }
+    
     /* Progress */
     .progress-container {
       padding: 20px 32px;
@@ -108,7 +143,7 @@
     /* Form */
     .form-content {
       padding: 32px;
-      max-height: 65vh;
+      max-height: 60vh;
       overflow-y: auto;
     }
     
@@ -289,11 +324,6 @@
       margin-bottom: 8px;
     }
     
-    @keyframes slideDown {
-      from { opacity: 0; max-height: 0; }
-      to { opacity: 1; max-height: 500px; }
-    }
-    
     /* Alert */
     .alert {
       margin: 16px 0;
@@ -310,7 +340,7 @@
     }
     
     .alert-success {
-      background: linear-gradient(135deg, var(--success-light) 0%, #a7f3d0 100%);
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
       border-left: 4px solid var(--success);
     }
     
@@ -327,6 +357,56 @@
     .alert-text {
       font-size: 0.95rem;
       color: #047857;
+    }
+    
+    /* Consent Box */
+    .consent-box {
+      margin: 24px 0;
+      padding: 20px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+    }
+    
+    .consent-checkbox {
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    
+    .consent-checkbox input[type="checkbox"] {
+      margin-top: 4px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .consent-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .consent-text strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    
+    .consent-text a {
+      color: var(--primary);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    
+    .consent-text ul {
+      margin: 8px 0;
+      padding-right: 20px;
+    }
+    
+    .consent-text li {
+      margin: 4px 0;
     }
     
     /* Button */
@@ -386,6 +466,11 @@
       to { transform: rotate(360deg); }
     }
     
+    @keyframes slideDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 1000px; }
+    }
+    
     .success-icon {
       font-size: 4rem;
       margin-bottom: 16px;
@@ -435,6 +520,7 @@
       body { padding: 16px; }
       .header h1 { font-size: 1.5rem; }
       .form-content { padding: 24px; max-height: none; }
+      .notice { margin: 16px 24px; padding: 16px; }
       .radio-group { flex-direction: column; }
     }
   </style>
@@ -447,6 +533,19 @@
       <div class="badge">🎯 פיילוט - בדיקת התאמה</div>
       <h1>מצאו את המטפל/ת המושלמ/ת</h1>
       <p>מילוי קצר של כ-2 דקות • מאובטח ומוצפן</p>
+    </div>
+    
+    <!-- Important Notice -->
+    <div class="notice">
+      <div class="notice-title">
+        <span class="notice-icon">💡</span>
+        <span>חשוב לדעת</span>
+      </div>
+      <div class="notice-text">
+        <strong>FlowMatch היא פלטפורמת התאמה בלבד</strong> ואינה ספקית שירותי בריאות.
+        איננו מאחסנים מידע רפואי או רשומות רפואיות.
+        המידע שאתם מוסרים משמש אך ורק ליצירת קשר ראשוני עם מטפלים מתאימים באזורכם.
+      </div>
     </div>
     
     <!-- Progress -->
@@ -540,9 +639,9 @@
           </h3>
           
           <div class="form-group">
-            <label><span class="required">*</span> סוג טיפול מרכזי</label>
+            <label><span class="required">*</span> איזה מקצוע מחפשים?</label>
             <select id="therapy" required>
-              <option value="">בחר/י סוג טיפול</option>
+              <option value="">בחר/י מקצוע</option>
               <option value="קלינאות תקשורת">קלינאות תקשורת</option>
               <option value="ריפוי בעיסוק">ריפוי בעיסוק</option>
               <option value="פיזיותרפיה">פיזיותרפיה</option>
@@ -550,18 +649,19 @@
             </select>
             
             <div class="sub-container" id="subContainer">
-              <div class="sub-title">⭐ תתי-התמחויות רלוונטיות</div>
+              <div class="sub-title">⭐ תחומי עניין (אופציונלי)</div>
               <div class="checkbox-chips" id="subChips"></div>
             </div>
           </div>
           
           <div class="form-group">
-            <label>קושי במציאת מטפל (אופציונלי)</label>
+            <label>מה חשוב לכם במטפל/ת? (אופציונלי)</label>
             <textarea 
               id="difficulty" 
-              placeholder="ספר/י מה הקושי (זמינות, מחיר, מרחק...)"
+              placeholder="לדוגמה: ניסיון עם ילדים בגיל בית ספר, קליניקה נגישה, זמינות בשעות אחה״צ..."
               rows="3"
             ></textarea>
+            <div class="hint">ספרו לנו על ההעדפות שלכם (ללא פרטים רפואיים)</div>
           </div>
         </div>
         
@@ -573,7 +673,7 @@
           </h3>
           
           <div class="form-group">
-            <label>מה חשוב לכם? (בחר/י מספר)</label>
+            <label>מה הכי חשוב לכם? (בחר/י מספר)</label>
             <div class="checkbox-chips">
               <div class="checkbox-chip">
                 <input type="checkbox" id="p1" value="⚡ זמינות מהירה">
@@ -625,6 +725,14 @@
           </div>
           
           <div class="form-group">
+            <label>משך מפגש מועדף</label>
+            <select id="duration">
+              <option value="45 דקות">45 דקות</option>
+              <option value="60 דקות">60 דקות</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
             <label>📋 יש לכם ביטוח בריאות פרטי?</label>
             <div class="radio-group">
               <div class="radio-option">
@@ -652,32 +760,35 @@
             <label>💼 תרצו שנציג ביטוח ייצור איתכם קשר?</label>
             <div class="radio-group">
               <div class="radio-option">
-                <input type="radio" id="off-yes" name="wantOffer" value="כן, אשמח להצעה" checked>
+                <input type="radio" id="off-yes" name="wantOffer" value="כן, אשמח להצעה">
                 <label for="off-yes">כן, אשמח</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="off-no" name="wantOffer" value="לא תודה">
+                <input type="radio" id="off-no" name="wantOffer" value="לא תודה (לא רלוונטי)" checked>
                 <label for="off-no">לא תודה</label>
               </div>
             </div>
           </div>
-          
-          <div class="form-group">
-            <label>מידע נוסף על ביטוח (אופציונלי)</label>
-            <textarea id="insInfo" rows="2" placeholder="משהו נוסף שחשוב לנו לדעת..."></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>משך מפגש מועדף</label>
-            <select id="duration">
-              <option value="45 דקות">45 דקות</option>
-              <option value="60 דקות">60 דקות</option>
-            </select>
-          </div>
+        </div>
+        
+        <!-- Consent Box -->
+        <div class="consent-box">
+          <label class="consent-checkbox">
+            <input type="checkbox" id="consent" required>
+            <div class="consent-text">
+              <strong>אני מאשר/ת:</strong>
+              <ul>
+                <li>FlowMatch היא פלטפורמת התאמה בלבד ואינה ספקית שירותי בריאות</li>
+                <li>המידע מועבר למטפלים רלוונטיים ומוחק מהמערכת תוך 30 יום</li>
+                <li>עליי להתייעץ עם איש/ת מקצוע מורשה לפני קבלת החלטות טיפוליות</li>
+                <li>קראתי את <a href="#privacy" onclick="showPrivacy(); return false;">מדיניות הפרטיות</a></li>
+              </ul>
+            </div>
+          </label>
         </div>
         
         <!-- Submit -->
-        <button type="submit" class="btn">
+        <button type="submit" class="btn" id="submitBtn">
           <span>🚀</span>
           שליחה ומציאת התאמות
         </button>
@@ -695,6 +806,7 @@
         <div class="success-icon">✅</div>
         <h2>הטופס נשלח בהצלחה!</h2>
         <p>תודה רבה! נחזור אליך בהקדם עם התאמות מדויקות.</p>
+        <p style="margin-top: 12px; font-size: 0.9rem;">המידע יישמר במערכת למשך 30 יום בלבד.</p>
       </div>
     </div>
   </div>
@@ -719,12 +831,11 @@
         difficulty: 'entry.267290518',
         preferences: 'entry.1975016513',
         timing: 'entry.1909228234',
-        hasInsurance: 'entry.1018715973',
-        wantOffer: 'entry.2043347683',
-        insInfo: 'entry.171718301',
         duration: 'entry.1540815796',
         parentName: 'entry.501366501',
-        phone: 'entry.2054465157'
+        phone: 'entry.2054465157',
+        hasInsurance: 'entry.1018715973',
+        wantOffer: 'entry.2043347683'
       }
     };
     
@@ -742,7 +853,11 @@
       const req = document.querySelectorAll('[required]');
       let filled = 0;
       req.forEach(el => {
-        if (el.value.trim()) filled++;
+        if (el.type === 'checkbox') {
+          if (el.checked) filled++;
+        } else if (el.value && el.value.trim()) {
+          filled++;
+        }
       });
       const pct = Math.round((filled / req.length) * 100);
       document.getElementById('progress').style.width = pct + '%';
@@ -755,6 +870,33 @@
       document.getElementById('toastMsg').textContent = msg;
       setTimeout(() => toast.classList.add('show'), 100);
       setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    
+    // Privacy Policy Modal
+    function showPrivacy() {
+      alert(`מדיניות פרטיות - FlowMatch
+
+מה אנחנו אוספים?
+• שם ומספר טלפון (ליצירת קשר)
+• אזור מגורים (למציאת מטפלים באזור)
+• העדפות כלליות (סוג מקצוע, זמינות)
+
+מה אנחנו לא אוספים?
+• תיק רפואי או רשומות רפואיות
+• אבחנות רפואיות מפורטות
+• מידע רגיש מעבר למינימום הנדרש
+
+מה אנחנו עושים עם המידע?
+• מעבירים אותו למטפלים מתאימים באזורכם
+• מוחקים אוטומטית אחרי 30 יום
+
+האם אנחנו שומרים מידע רפואי?
+לא. FlowMatch היא פלטפורמת התאמה בלבד, לא ספקית שירותי בריאות.
+
+איך למחוק את המידע שלך?
+שלח מייל ל-privacy@flowmatch.co.il
+
+עדכון אחרון: דצמבר 2024`);
     }
     
     // Sub-specs
@@ -808,7 +950,13 @@
     document.getElementById('form').addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      // Validate
+      // Validate consent
+      if (!document.getElementById('consent').checked) {
+        showToast('אנא אשר/י את תנאי השימוש ומדיניות הפרטיות');
+        return;
+      }
+      
+      // Validate required
       if (!document.getElementById('parentName').value.trim()) {
         showToast('אנא הזן/י את שמך');
         return;
@@ -826,7 +974,7 @@
         return;
       }
       if (!document.getElementById('therapy').value) {
-        showToast('אנא בחר/י סוג טיפול');
+        showToast('אנא בחר/י מקצוע');
         return;
       }
       
@@ -837,7 +985,6 @@
       // Get preferences
       const prefs = [];
       document.querySelectorAll('.checkbox-chips input:checked').forEach(cb => {
-        // Skip sub-specs checkboxes
         if (cb.id.startsWith('p')) {
           prefs.push(cb.value);
         }
@@ -861,8 +1008,9 @@
       });
       
       formData.append(CONFIG.entries.timing, document.querySelector('[name="timing"]:checked').value);
+      formData.append(CONFIG.entries.duration, document.getElementById('duration').value);
       
-      // Insurance logic
+      // Insurance
       const hasIns = document.querySelector('[name="hasIns"]:checked').value;
       formData.append(CONFIG.entries.hasInsurance, hasIns);
       
@@ -872,9 +1020,6 @@
         const wantOffer = document.querySelector('[name="wantOffer"]:checked').value;
         formData.append(CONFIG.entries.wantOffer, wantOffer);
       }
-      
-      formData.append(CONFIG.entries.insInfo, document.getElementById('insInfo').value);
-      formData.append(CONFIG.entries.duration, document.getElementById('duration').value);
       
       try {
         await fetch(CONFIG.url, {
