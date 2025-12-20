@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>התאמת טיפול – פיילוט</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>בדיקת התאמת טיפול (פיילוט)</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      background: #f4f6f8;
       margin: 0;
       padding: 0;
     }
     .container {
       max-width: 720px;
-      margin: 24px auto;
+      margin: 30px auto;
       background: #fff;
       padding: 24px;
       border-radius: 8px;
@@ -33,8 +33,14 @@
       padding: 10px;
       font-size: 14px;
     }
-    textarea {
-      resize: vertical;
+    button {
+      margin-top: 28px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
     }
     .prefs {
       display: flex;
@@ -43,9 +49,9 @@
       margin-top: 8px;
     }
     .pref {
-      padding: 8px 12px;
       border: 1px solid #ccc;
-      border-radius: 16px;
+      padding: 8px 12px;
+      border-radius: 18px;
       cursor: pointer;
       user-select: none;
     }
@@ -57,158 +63,139 @@
     .hidden {
       display: none;
     }
-    button {
-      margin-top: 24px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>בדיקת התאמת טיפול (פיילוט)</h1>
-    <p>מילוי קצר (כ־2 דקות). המידע משמש לצורך בדיקת התאמה בלבד.</p>
+<div class="container">
+  <h1>בדיקת התאמת טיפול (פיילוט)</h1>
+  <p>מילוי קצר (כ־2 דקות). המידע משמש לבדיקת התאמה בלבד.</p>
 
-    <form
-      action="https://docs.google.com/forms/d/e/1FAIpQLSfSHU7BpvfY0ExW1JSk3QdXmPVof08EoWaGAiKaf2fiZmZ9BQ/formResponse"
-      method="POST"
-      target="hidden_iframe"
-      onsubmit="handleSubmit()"
-    >
+  <form
+    action="https://docs.google.com/forms/d/e/1OhCNwyk27gEijHVEQK64K0nuYfHpjTy9ecbq6YUmYqQ/formResponse"
+    method="POST"
+    target="hidden_iframe"
+    onsubmit="return handleSubmit();"
+  >
 
-      <!-- שם פרטי (אופציונלי) -->
-      <label>שם פרטי (אופציונלי)</label>
-      <input type="text" name="entry.1874755091" />
+    <label>שם פרטי (אופציונלי)</label>
+    <input type="text" name="entry.1874755091">
 
-      <!-- גיל הילד -->
-      <label>גיל הילד/ה *</label>
-      <select name="entry.1479557102" required>
-        <option value="">בחרו</option>
-        <option>0-3</option>
-        <option>3-6</option>
-        <option>6-9</option>
-        <option>9-12</option>
-        <option>12-16</option>
-        <option>16+</option>
-      </select>
+    <label>גיל הילד/ה *</label>
+    <select name="entry.1479557102" required>
+      <option value="">בחרו</option>
+      <option>0-3</option>
+      <option>3-6</option>
+      <option>6-9</option>
+      <option>9-12</option>
+      <option>12-16</option>
+      <option>16+</option>
+    </select>
 
-      <!-- אזור -->
-      <label>אזור מגורים *</label>
-      <select name="entry.1519777934" required>
-        <option value="">בחרו</option>
-        <option>מרכז</option>
-        <option>שרון</option>
-        <option>שפלה</option>
-        <option>ירושלים והסביבה</option>
-        <option>דרום</option>
-        <option>נגב</option>
-        <option>צפון</option>
-        <option>אונליין</option>
-      </select>
+    <label>אזור מגורים *</label>
+    <select name="entry.1519777934" required>
+      <option value="">בחרו</option>
+      <option>מרכז</option>
+      <option>שרון</option>
+      <option>שפלה</option>
+      <option>ירושלים והסביבה</option>
+      <option>דרום</option>
+      <option>נגב</option>
+      <option>צפון</option>
+      <option>אונליין</option>
+    </select>
 
-      <!-- שפה -->
-      <label>שפת טיפול מועדפת</label>
-      <select name="entry.2044023557">
-        <option>לא משנה</option>
-        <option>עברית</option>
-        <option>ערבית</option>
-        <option>אנגלית</option>
-        <option>רוסית</option>
-        <option>אחר</option>
-      </select>
+    <label>שפת טיפול מועדפת</label>
+    <select name="entry.2044023557">
+      <option>לא משנה</option>
+      <option>עברית</option>
+      <option>ערבית</option>
+      <option>אנגלית</option>
+      <option>רוסית</option>
+      <option>אחר</option>
+    </select>
 
-      <!-- סוג טיפול -->
-      <label>סוג טיפול מרכזי *</label>
-      <select name="entry.921962628" required>
-        <option value="">בחרו</option>
-        <option>קלינאות תקשורת</option>
-        <option>ריפוי בעיסוק</option>
-        <option>פיזיותרפיה</option>
-        <option>טיפול רגשי</option>
-      </select>
+    <label>סוג טיפול מרכזי *</label>
+    <select name="entry.921962628" required>
+      <option value="">בחרו</option>
+      <option>קלינאות תקשורת</option>
+      <option>ריפוי בעיסוק</option>
+      <option>פיזיותרפיה</option>
+      <option>טיפול רגשי</option>
+    </select>
 
-      <!-- תת התמחות -->
-      <label>תת־התמחות ספציפית (אם רלוונטי)</label>
-      <select name="entry.792546451">
-        <option value="">לא רלוונטי</option>
-        <option>עיכוב שפתי</option>
-        <option>הפרעות היגוי</option>
-        <option>קשיי ויסות חושי</option>
-        <option>מוטוריקה עדינה</option>
-        <option>מוטוריקה גסה</option>
-        <option>ASD</option>
-        <option>חרדה</option>
-        <option>קשיים רגשיים</option>
-        <option>אחר</option>
-      </select>
+    <label>תת־התמחות (אם רלוונטי)</label>
+    <select name="entry.792546451">
+      <option value="">לא רלוונטי</option>
+      <option>הפרעות היגוי</option>
+      <option>עיכוב שפתי</option>
+      <option>ויסות חושי</option>
+      <option>קשיים רגשיים</option>
+      <option>ASD</option>
+      <option>אחר</option>
+    </select>
 
-      <!-- העדפות -->
-      <label>מה חשוב לכם בטיפול?</label>
-      <div class="prefs">
-        <div class="pref" data-value="⚡ זמינות מהירה">⚡ זמינות מהירה</div>
-        <div class="pref" data-value="💻 טיפול אונליין">💻 טיפול אונליין</div>
-        <div class="pref" data-value="🏠 הגעה לבית">🏠 הגעה לבית</div>
-        <div class="pref" data-value="📍 קליניקה קרובה">📍 קליניקה קרובה</div>
-        <div class="pref" data-value="🎓 ניסיון עם חינוך מיוחד">🎓 ניסיון עם חינוך מיוחד</div>
-        <div class="pref" data-value="🤝 עבודה מול מסגרת">🤝 עבודה מול מסגרת</div>
-        <div class="pref" data-value="💚 דגש רגשי">💚 דגש רגשי</div>
-      </div>
+    <label>מה חשוב לכם בטיפול?</label>
+    <div class="prefs">
+      <div class="pref" data-value="⚡ זמינות מהירה">⚡ זמינות מהירה</div>
+      <div class="pref" data-value="💻 טיפול אונליין">💻 טיפול אונליין</div>
+      <div class="pref" data-value="🏠 הגעה לבית">🏠 הגעה לבית</div>
+      <div class="pref" data-value="📍 קליניקה קרובה">📍 קליניקה קרובה</div>
+      <div class="pref" data-value="💚 דגש רגשי">💚 דגש רגשי</div>
+    </div>
 
-      <!-- יש מסמך -->
-      <label>האם יש מסמך שיכול לסייע בהתאמה?</label>
-      <select name="entry.2144973180" onchange="toggleDoc(this.value)">
-        <option>לא</option>
-        <option>כן</option>
-      </select>
+    <label>האם יש מסמך שיכול לסייע בהתאמה?</label>
+    <select name="entry.2144973180" onchange="toggleDoc(this.value)">
+      <option>לא</option>
+      <option>כן</option>
+    </select>
 
-      <!-- תיאור מסמך -->
-      <div id="docDesc" class="hidden">
-        <label>אם כן – איזה מסמך?</label>
-        <textarea name="entry.1909228234" rows="3"></textarea>
-      </div>
+    <div id="docBlock" class="hidden">
+      <label>איזה מסמך?</label>
+      <textarea name="entry.1909228234" rows="3"></textarea>
+    </div>
 
-      <!-- משך מפגש -->
-      <label>משך מפגש מועדף</label>
-      <select name="entry.1540815796">
-        <option>45 דקות</option>
-        <option>60 דקות</option>
-      </select>
+    <label>משך מפגש מועדף</label>
+    <select name="entry.1540815796">
+      <option>45 דקות</option>
+      <option>60 דקות</option>
+    </select>
 
-      <button type="submit">שליחה</button>
-    </form>
+    <button type="submit">שליחה</button>
+  </form>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
-  </div>
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+</div>
 
-  <script>
-    // Toggle preferences
-    document.querySelectorAll('.pref').forEach(el => {
-      el.addEventListener('click', () => {
-        el.classList.toggle('active');
-      });
+<script>
+  document.querySelectorAll('.pref').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('active');
+    });
+  });
+
+  function toggleDoc(val) {
+    document.getElementById('docBlock').classList.toggle('hidden', val !== 'כן');
+  }
+
+  function handleSubmit() {
+    const form = document.querySelector('form');
+    const selected = document.querySelectorAll('.pref.active');
+
+    selected.forEach(p => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'entry.1975016513';
+      input.value = p.dataset.value;
+      form.appendChild(input);
     });
 
-    function toggleDoc(val) {
-      document.getElementById('docDesc').classList.toggle('hidden', val !== 'כן');
-    }
+    setTimeout(() => {
+      alert('הפרטים נשלחו בהצלחה, תודה 🙏');
+    }, 400);
 
-    // Handle submit: push preferences as repeated entries
-    function handleSubmit() {
-      const form = document.querySelector('form');
-      const selected = document.querySelectorAll('.pref.active');
-      selected.forEach(p => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'entry.1975016513';
-        input.value = p.dataset.value;
-        form.appendChild(input);
-      });
-    }
-  </script>
+    return true; // ← קריטי! מאפשר שליחה
+  }
+</script>
 </body>
 </html>
