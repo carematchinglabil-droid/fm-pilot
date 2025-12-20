@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowMatch - טופס הורים</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #3d7bfd;
+      --primary-light: #e0f2fe;
+      --secondary: #22c1c3;
+      --success: #10b981;
+      --info: #3b82f6;
+      --info-light: #dbeafe;
+      --error: #ef4444;
+      --text: #1f2937;
+      --text-secondary: #6b7280;
+      --surface: #f9fafb;
+      --border: #e5e7eb;
+      --white: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Assistant', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 24px;
+      color: var(--text);
+    }
+    
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 32px;
+      text-align: center;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      opacity: 0.95;
+    }
+    
+    /* Important Notice */
+    .notice {
+      margin: 24px 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--info-light) 0%, #bfdbfe 100%);
+      border-right: 4px solid var(--info);
+      border-radius: 12px;
+      animation: slideDown 0.5s;
+    }
+    
+    .notice-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+    
+    .notice-icon {
+      font-size: 1.5rem;
+    }
+    
+    .notice-text {
+      font-size: 0.95rem;
+      color: #1e40af;
+      line-height: 1.6;
+    }
+    
+    .notice-text strong {
+      color: #1e3a8a;
+    }
+    
+    /* Progress */
+    .progress-container {
+      padding: 20px 32px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .progress-text {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s;
+      width: 0%;
+    }
+    
+    /* Form */
+    .form-content {
+      padding: 32px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    
+    .section {
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+    }
+    
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .required {
+      color: var(--error);
+    }
+    
+    .hint {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    
+    input[type="text"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-family: 'Assistant', sans-serif;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(61, 123, 253, 0.1);
+    }
+    
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 16px center;
+      padding-left: 40px;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    /* Checkboxes */
+    .checkbox-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .checkbox-chip {
+      position: relative;
+    }
+    
+    .checkbox-chip input {
+      position: absolute;
+      opacity: 0;
+    }
+    
+    .checkbox-chip label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 0;
+    }
+    
+    .checkbox-chip input:checked + label {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    .checkbox-chip label:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    /* Radio */
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+    
+    .radio-option input {
+      position: absolute;
+      opacity: 0;
+    }
+    
+    .radio-option label {
+      display: block;
+      padding: 12px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 0;
+    }
+    
+    .radio-option input:checked + label {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    /* Sub-specs */
+    .sub-container {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--primary-light);
+      border-radius: 12px;
+      border: 2px dashed var(--primary);
+      display: none;
+    }
+    
+    .sub-container.show {
+      display: block;
+      animation: slideDown 0.3s;
+    }
+    
+    .sub-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+    
+    /* Alert */
+    .alert {
+      margin: 16px 0;
+      padding: 16px;
+      border-radius: 12px;
+      display: none;
+    }
+    
+    .alert.show {
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      animation: slideDown 0.3s;
+    }
+    
+    .alert-success {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-left: 4px solid var(--success);
+    }
+    
+    .alert-icon {
+      font-size: 1.5rem;
+    }
+    
+    .alert-title {
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 4px;
+    }
+    
+    .alert-text {
+      font-size: 0.95rem;
+      color: #047857;
+    }
+    
+    /* Consent Box */
+    .consent-box {
+      margin: 24px 0;
+      padding: 20px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+    }
+    
+    .consent-checkbox {
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    
+    .consent-checkbox input[type="checkbox"] {
+      margin-top: 4px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .consent-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .consent-text strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    
+    .consent-text a {
+      color: var(--primary);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    
+    .consent-text ul {
+      margin: 8px 0;
+      padding-right: 20px;
+    }
+    
+    .consent-text li {
+      margin: 4px 0;
+    }
+    
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.125rem;
+      font-weight: 700;
+      font-family: 'Assistant', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(61, 123, 253, 0.3);
+    }
+    
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(61, 123, 253, 0.4);
+    }
+    
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    /* Loading & Success */
+    .loading,
+    .success {
+      display: none;
+      text-align: center;
+      padding: 48px 32px;
+    }
+    
+    .loading.show,
+    .success.show {
+      display: block;
+    }
+    
+    .spinner {
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes slideDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 1000px; }
+    }
+    
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      animation: bounceIn 0.5s;
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .success h2 {
+      color: var(--success);
+      margin-bottom: 12px;
+    }
+    
+    .success p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      transition: all 0.3s;
+      border-left: 4px solid var(--error);
+    }
+    
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 16px; }
+      .header h1 { font-size: 1.5rem; }
+      .form-content { padding: 24px; max-height: none; }
+      .notice { margin: 16px 24px; padding: 16px; }
+      .radio-group { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="badge">🎯 פיילוט - בדיקת התאמה</div>
+      <h1>מצאו את המטפל/ת המושלמ/ת</h1>
+      <p>מילוי קצר של כ-2 דקות • מאובטח ומוצפן</p>
+    </div>
+    
+    <!-- Important Notice -->
+    <div class="notice">
+      <div class="notice-title">
+        <span class="notice-icon">💡</span>
+        <span>חשוב לדעת</span>
+      </div>
+      <div class="notice-text">
+        <strong>FlowMatch היא פלטפורמת התאמה בלבד</strong> ואינה ספקית שירותי בריאות.
+        איננו מאחסנים מידע רפואי או רשומות רפואיות.
+        המידע שאתם מוסרים משמש אך ורק ליצירת קשר ראשוני עם מטפלים מתאימים באזורכם.
+      </div>
+    </div>
+    
+    <!-- Progress -->
+    <div class="progress-container">
+      <div class="progress-text">התקדמות: <span id="pct">0%</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+    </div>
+    
+    <!-- Form -->
+    <div class="form-content">
+      <form id="form">
+        
+        <!-- פרטי קשר -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>👤</span>
+            פרטי קשר
+          </h3>
+          
+          <div class="form-group">
+            <label>שם פרטי (אופציונלי)</label>
+            <input type="text" id="childName" placeholder="שם הילד/ה" />
+            <div class="hint">עוזר לנו לפנות אליכם אישית</div>
+          </div>
+          
+          <div class="form-group">
+            <label><span class="required">*</span> שם ההורה</label>
+            <input type="text" id="parentName" placeholder="השם שלך" required />
+          </div>
+          
+          <div class="form-group">
+            <label><span class="required">*</span> טלפון נייד</label>
+            <input type="tel" id="phone" placeholder="050-1234567" required />
+            <div class="hint">לתיאום מהיר ונוח</div>
+          </div>
+          
+          <div class="form-group">
+            <label><span class="required">*</span> גיל הילד/ה</label>
+            <select id="age" required>
+              <option value="">בחר/י קבוצת גיל</option>
+              <option value="0-3">0-3 שנים</option>
+              <option value="3-6">3-6 שנים</option>
+              <option value="6-9">6-9 שנים</option>
+              <option value="9-12">9-12 שנים</option>
+              <option value="12-16">12-16 שנים</option>
+              <option value="16+">16+ שנים</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- מיקום -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>📍</span>
+            מיקום וזמינות
+          </h3>
+          
+          <div class="form-group">
+            <label><span class="required">*</span> אזור מגורים</label>
+            <select id="region" required>
+              <option value="">בחר/י אזור</option>
+              <option value="מרכז">מרכז</option>
+              <option value="שרון">שרון</option>
+              <option value="שפלה">שפלה</option>
+              <option value="ירושלים והסביבה">ירושלים והסביבה</option>
+              <option value="צפון">צפון</option>
+              <option value="דרום">דרום</option>
+              <option value="נגב">נגב</option>
+              <option value="אזור חיפה">אזור חיפה</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>שפת טיפול</label>
+            <select id="language">
+              <option value="עברית">עברית</option>
+              <option value="אנגלית">אנגלית</option>
+              <option value="רוסית">רוסית</option>
+              <option value="ערבית">ערבית</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- סוג טיפול -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>🎯</span>
+            סוג הטיפול
+          </h3>
+          
+          <div class="form-group">
+            <label><span class="required">*</span> איזה מקצוע מחפשים?</label>
+            <select id="therapy" required>
+              <option value="">בחר/י מקצוע</option>
+              <option value="קלינאות תקשורת">קלינאות תקשורת</option>
+              <option value="ריפוי בעיסוק">ריפוי בעיסוק</option>
+              <option value="פיזיותרפיה">פיזיותרפיה</option>
+              <option value="טיפול רגשי">טיפול רגשי</option>
+            </select>
+            
+            <div class="sub-container" id="subContainer">
+              <div class="sub-title">⭐ תחומי עניין (אופציונלי)</div>
+              <div class="checkbox-chips" id="subChips"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>מה חשוב לכם במטפל/ת? (אופציונלי)</label>
+            <textarea 
+              id="difficulty" 
+              placeholder="לדוגמה: ניסיון עם ילדים בגיל בית ספר, קליניקה נגישה, זמינות בשעות אחה״צ..."
+              rows="3"
+            ></textarea>
+            <div class="hint">ספרו לנו על ההעדפות שלכם (ללא פרטים רפואיים)</div>
+          </div>
+        </div>
+        
+        <!-- העדפות -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>⚙️</span>
+            העדפות
+          </h3>
+          
+          <div class="form-group">
+            <label>מה הכי חשוב לכם? (בחר/י מספר)</label>
+            <div class="checkbox-chips">
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p1" value="⚡ זמינות מהירה">
+                <label for="p1"><span>⚡</span> זמינות מהירה</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p2" value="💻 טיפול אונליין">
+                <label for="p2"><span>💻</span> טיפול אונליין</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p3" value="🏠 הגעה לבית">
+                <label for="p3"><span>🏠</span> הגעה לבית</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p4" value="📍 קליניקה נגישה">
+                <label for="p4"><span>📍</span> קליניקה נגישה</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p5" value="🎓 ניסיון עם חינוך מיוחד">
+                <label for="p5"><span>🎓</span> ניסיון עם חינוך מיוחד</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p6" value="💰 מחיר נוח">
+                <label for="p6"><span>💰</span> מחיר נוח</label>
+              </div>
+              <div class="checkbox-chip">
+                <input type="checkbox" id="p7" value="❤️ דגש רגשי">
+                <label for="p7"><span>❤️</span> דגש רגשי</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>מתי תרצו להתחיל?</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="t1" name="timing" value="בהקדם" checked>
+                <label for="t1">בהקדם</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="t2" name="timing" value="בחודש הקרוב">
+                <label for="t2">בחודש הקרוב</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="t3" name="timing" value="גמיש">
+                <label for="t3">גמיש</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>משך מפגש מועדף</label>
+            <select id="duration">
+              <option value="45 דקות">45 דקות</option>
+              <option value="60 דקות">60 דקות</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>📋 יש לכם ביטוח בריאות פרטי?</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="ins-yes" name="hasIns" value="כן">
+                <label for="ins-yes">כן</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="ins-no" name="hasIns" value="לא" checked>
+                <label for="ins-no">לא</label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- הודעה אם יש ביטוח -->
+          <div class="alert alert-success" id="insAlert">
+            <div class="alert-icon">💡</div>
+            <div>
+              <div class="alert-title">מעולה!</div>
+              <div class="alert-text">אל תשכחו לממש את הזכויות הביטוחיות שלכם. נשמח לעזור לכם עם ההליך.</div>
+            </div>
+          </div>
+          
+          <!-- שאלה נוספת אם אין ביטוח -->
+          <div class="form-group" id="offerGroup">
+            <label>💼 תרצו שנציג ביטוח ייצור איתכם קשר?</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="off-yes" name="wantOffer" value="כן, אשמח להצעה">
+                <label for="off-yes">כן, אשמח</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="off-no" name="wantOffer" value="לא תודה (לא רלוונטי)" checked>
+                <label for="off-no">לא תודה</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Consent Box -->
+        <div class="consent-box">
+          <label class="consent-checkbox">
+            <input type="checkbox" id="consent" required>
+            <div class="consent-text">
+              <strong>אני מאשר/ת:</strong>
+              <ul>
+                <li>FlowMatch היא פלטפורמת התאמה בלבד ואינה ספקית שירותי בריאות</li>
+                <li>המידע מועבר למטפלים רלוונטיים ומוחק מהמערכת תוך 30 יום</li>
+                <li>עליי להתייעץ עם איש/ת מקצוע מורשה לפני קבלת החלטות טיפוליות</li>
+                <li>קראתי את <a href="#privacy" onclick="showPrivacy(); return false;">מדיניות הפרטיות</a></li>
+              </ul>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Submit -->
+        <button type="submit" class="btn" id="submitBtn">
+          <span>🚀</span>
+          שליחה ומציאת התאמות
+        </button>
+        
+      </form>
+      
+      <!-- Loading -->
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>מעבד את הנתונים ומחפש התאמות...</p>
+      </div>
+      
+      <!-- Success -->
+      <div class="success" id="success">
+        <div class="success-icon">✅</div>
+        <h2>הטופס נשלח בהצלחה!</h2>
+        <p>תודה רבה! נחזור אליך בהקדם עם התאמות מדויקות.</p>
+        <p style="margin-top: 12px; font-size: 0.9rem;">המידע יישמר במערכת למשך 30 יום בלבד.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span>❌</span>
+    <span id="toastMsg"></span>
+  </div>
+  
+  <script>
+    // Config
+    const CONFIG = {
+      url: 'https://docs.google.com/forms/d/e/1FAIpQLSfSHU7BpvfY0ExW1JSk3QdXmPVof08EoWaGAiKaf2fiZmZ9BQ/formResponse',
+      entries: {
+        childName: 'entry.1874755091',
+        age: 'entry.1479557102',
+        region: 'entry.1519777934',
+        language: 'entry.2044023557',
+        therapy: 'entry.921962628',
+        subSpecs: 'entry.792546451',
+        difficulty: 'entry.267290518',
+        preferences: 'entry.1975016513',
+        timing: 'entry.1909228234',
+        duration: 'entry.1540815796',
+        parentName: 'entry.501366501',
+        phone: 'entry.2054465157',
+        hasInsurance: 'entry.1018715973',
+        wantOffer: 'entry.2043347683'
+      }
+    };
+    
+    const SUBS = {
+      'קלינאות תקשורת': ['הפרעות היגוי', 'קשיי שפה', 'גמגום', 'עיכוב שפתי'],
+      'ריפוי בעיסוק': ['ויסות חושי', 'מוטוריקה עדינה', 'מוטוריקה גסה', 'קשב וריכוז'],
+      'פיזיותרפיה': ['שיווי משקל', 'כוח שרירים', 'גמישות'],
+      'טיפול רגשי': ['חרדות', 'קשיי הסתגלות', 'ויסות רגשי', 'התנהגות']
+    };
+    
+    let selectedSubs = [];
+    
+    // Progress
+    function updateProgress() {
+      const req = document.querySelectorAll('[required]');
+      let filled = 0;
+      req.forEach(el => {
+        if (el.type === 'checkbox') {
+          if (el.checked) filled++;
+        } else if (el.value && el.value.trim()) {
+          filled++;
+        }
+      });
+      const pct = Math.round((filled / req.length) * 100);
+      document.getElementById('progress').style.width = pct + '%';
+      document.getElementById('pct').textContent = pct + '%';
+    }
+    
+    // Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    
+    // Privacy Policy Modal
+    function showPrivacy() {
+      alert(`מדיניות פרטיות - FlowMatch
+
+מה אנחנו אוספים?
+• שם ומספר טלפון (ליצירת קשר)
+• אזור מגורים (למציאת מטפלים באזור)
+• העדפות כלליות (סוג מקצוע, זמינות)
+
+מה אנחנו לא אוספים?
+• תיק רפואי או רשומות רפואיות
+• אבחנות רפואיות מפורטות
+• מידע רגיש מעבר למינימום הנדרש
+
+מה אנחנו עושים עם המידע?
+• מעבירים אותו למטפלים מתאימים באזורכם
+• מוחקים אוטומטית אחרי 30 יום
+
+האם אנחנו שומרים מידע רפואי?
+לא. FlowMatch היא פלטפורמת התאמה בלבד, לא ספקית שירותי בריאות.
+
+איך למחוק את המידע שלך?
+שלח מייל ל-privacy@flowmatch.co.il
+
+עדכון אחרון: דצמבר 2024`);
+    }
+    
+    // Sub-specs
+    document.getElementById('therapy').addEventListener('change', function() {
+      const container = document.getElementById('subContainer');
+      const chips = document.getElementById('subChips');
+      selectedSubs = [];
+      chips.innerHTML = '';
+      
+      if (this.value && SUBS[this.value]) {
+        container.classList.add('show');
+        SUBS[this.value].forEach((spec, i) => {
+          const id = 's' + i;
+          const div = document.createElement('div');
+          div.className = 'checkbox-chip';
+          div.innerHTML = `
+            <input type="checkbox" id="${id}" value="${spec}">
+            <label for="${id}">${spec}</label>
+          `;
+          div.querySelector('input').addEventListener('change', function() {
+            if (this.checked) {
+              selectedSubs.push(spec);
+            } else {
+              selectedSubs = selectedSubs.filter(s => s !== spec);
+            }
+          });
+          chips.appendChild(div);
+        });
+      } else {
+        container.classList.remove('show');
+      }
+    });
+    
+    // Insurance logic
+    document.querySelectorAll('[name="hasIns"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const alert = document.getElementById('insAlert');
+        const offerGroup = document.getElementById('offerGroup');
+        
+        if (this.value === 'כן') {
+          alert.classList.add('show');
+          offerGroup.style.display = 'none';
+        } else {
+          alert.classList.remove('show');
+          offerGroup.style.display = 'block';
+        }
+      });
+    });
+    
+    // Form submit
+    document.getElementById('form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validate consent
+      if (!document.getElementById('consent').checked) {
+        showToast('אנא אשר/י את תנאי השימוש ומדיניות הפרטיות');
+        return;
+      }
+      
+      // Validate required
+      if (!document.getElementById('parentName').value.trim()) {
+        showToast('אנא הזן/י את שמך');
+        return;
+      }
+      if (!document.getElementById('phone').value.trim()) {
+        showToast('אנא הזן/י מספר טלפון');
+        return;
+      }
+      if (!document.getElementById('age').value) {
+        showToast('אנא בחר/י גיל הילד');
+        return;
+      }
+      if (!document.getElementById('region').value) {
+        showToast('אנא בחר/י אזור');
+        return;
+      }
+      if (!document.getElementById('therapy').value) {
+        showToast('אנא בחר/י מקצוע');
+        return;
+      }
+      
+      // Show loading
+      document.querySelector('form').style.display = 'none';
+      document.getElementById('loading').classList.add('show');
+      
+      // Get preferences
+      const prefs = [];
+      document.querySelectorAll('.checkbox-chips input:checked').forEach(cb => {
+        if (cb.id.startsWith('p')) {
+          prefs.push(cb.value);
+        }
+      });
+      
+      // Prepare data
+      const formData = new FormData();
+      formData.append(CONFIG.entries.childName, document.getElementById('childName').value);
+      formData.append(CONFIG.entries.parentName, document.getElementById('parentName').value);
+      formData.append(CONFIG.entries.phone, document.getElementById('phone').value);
+      formData.append(CONFIG.entries.age, document.getElementById('age').value);
+      formData.append(CONFIG.entries.region, document.getElementById('region').value);
+      formData.append(CONFIG.entries.language, document.getElementById('language').value);
+      formData.append(CONFIG.entries.therapy, document.getElementById('therapy').value);
+      formData.append(CONFIG.entries.subSpecs, selectedSubs.join(', ') || 'לא רלוונטי');
+      formData.append(CONFIG.entries.difficulty, document.getElementById('difficulty').value);
+      
+      // Multi-select preferences
+      prefs.forEach(pref => {
+        formData.append(CONFIG.entries.preferences, pref);
+      });
+      
+      formData.append(CONFIG.entries.timing, document.querySelector('[name="timing"]:checked').value);
+      formData.append(CONFIG.entries.duration, document.getElementById('duration').value);
+      
+      // Insurance
+      const hasIns = document.querySelector('[name="hasIns"]:checked').value;
+      formData.append(CONFIG.entries.hasInsurance, hasIns);
+      
+      if (hasIns === 'כן') {
+        formData.append(CONFIG.entries.wantOffer, 'לא רלוונטי');
+      } else {
+        const wantOffer = document.querySelector('[name="wantOffer"]:checked').value;
+        formData.append(CONFIG.entries.wantOffer, wantOffer);
+      }
+      
+      try {
+        await fetch(CONFIG.url, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        });
+        
+        setTimeout(() => {
+          document.getElementById('loading').classList.remove('show');
+          document.getElementById('success').classList.add('show');
+        }, 1500);
+        
+      } catch (err) {
+        console.error(err);
+        showToast('שגיאה בשליחה. נסה/י שוב');
+        document.getElementById('loading').classList.remove('show');
+        document.querySelector('form').style.display = 'block';
+      }
+    });
+    
+    // Track progress
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', updateProgress);
+      el.addEventListener('change', updateProgress);
+    });
+    
+    // Animate sections
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.section').forEach((sec, i) => {
+        setTimeout(() => sec.classList.add('visible'), i * 150);
+      });
+    });
+    
+    updateProgress();
+  </script>
+</body>
+</html>
