@@ -69,18 +69,20 @@
 <body>
 <div class="container">
   <h1>בדיקת התאמת טיפול (פיילוט)</h1>
-  <p>מילוי קצר (כ־2 דקות). המידע משמש לבדיקת התאמה בלבד.</p>
+  <p>מילוי קצר (כ־2 דקות). המידע משמש לצורך בדיקת התאמה בלבד.</p>
 
   <form
-    action="https://docs.google.com/forms/d/e/1OhCNwyk27gEijHVEQK64K0nuYfHpjTy9ecbq6YUmYqQ/formResponse"
+    action="https://docs.google.com/forms/d/e/1FAIpQLSfSHU7BpvfY0ExW1JSk3QdXmPVof08EoWaGAiKaf2fiZmZ9BQ/formResponse"
     method="POST"
     target="hidden_iframe"
     onsubmit="return handleSubmit();"
   >
 
+    <!-- שם -->
     <label>שם פרטי (אופציונלי)</label>
     <input type="text" name="entry.1874755091">
 
+    <!-- גיל -->
     <label>גיל הילד/ה *</label>
     <select name="entry.1479557102" required>
       <option value="">בחרו</option>
@@ -92,6 +94,7 @@
       <option>16+</option>
     </select>
 
+    <!-- אזור -->
     <label>אזור מגורים *</label>
     <select name="entry.1519777934" required>
       <option value="">בחרו</option>
@@ -105,6 +108,7 @@
       <option>אונליין</option>
     </select>
 
+    <!-- שפה -->
     <label>שפת טיפול מועדפת</label>
     <select name="entry.2044023557">
       <option>לא משנה</option>
@@ -115,6 +119,7 @@
       <option>אחר</option>
     </select>
 
+    <!-- סוג טיפול -->
     <label>סוג טיפול מרכזי *</label>
     <select name="entry.921962628" required>
       <option value="">בחרו</option>
@@ -124,6 +129,7 @@
       <option>טיפול רגשי</option>
     </select>
 
+    <!-- תת התמחות -->
     <label>תת־התמחות (אם רלוונטי)</label>
     <select name="entry.792546451">
       <option value="">לא רלוונטי</option>
@@ -135,15 +141,16 @@
       <option>אחר</option>
     </select>
 
+    <!-- העדפות -->
     <label>מה חשוב לכם בטיפול?</label>
     <div class="prefs">
-      <div class="pref" data-value="⚡ זמינות מהירה">⚡ זמינות מהירה</div>
-      <div class="pref" data-value="💻 טיפול אונליין">💻 טיפול אונליין</div>
-      <div class="pref" data-value="🏠 הגעה לבית">🏠 הגעה לבית</div>
-      <div class="pref" data-value="📍 קליניקה קרובה">📍 קליניקה קרובה</div>
-      <div class="pref" data-value="💚 דגש רגשי">💚 דגש רגשי</div>
+      <div class="pref" data-value="זמינות מהירה">⚡ זמינות מהירה</div>
+      <div class="pref" data-value="טיפול אונליין">💻 טיפול אונליין</div>
+      <div class="pref" data-value="קליניקה קרובה">📍 קליניקה קרובה</div>
+      <div class="pref" data-value="דגש רגשי">💚 דגש רגשי</div>
     </div>
 
+    <!-- מסמך -->
     <label>האם יש מסמך שיכול לסייע בהתאמה?</label>
     <select name="entry.2144973180" onchange="toggleDoc(this.value)">
       <option>לא</option>
@@ -155,6 +162,7 @@
       <textarea name="entry.1909228234" rows="3"></textarea>
     </div>
 
+    <!-- משך -->
     <label>משך מפגש מועדף</label>
     <select name="entry.1540815796">
       <option>45 דקות</option>
@@ -168,6 +176,7 @@
 </div>
 
 <script>
+  // בחירת העדפות
   document.querySelectorAll('.pref').forEach(el => {
     el.addEventListener('click', () => {
       el.classList.toggle('active');
@@ -180,21 +189,28 @@
 
   function handleSubmit() {
     const form = document.querySelector('form');
-    const selected = document.querySelectorAll('.pref.active');
 
-    selected.forEach(p => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'entry.1975016513';
-      input.value = p.dataset.value;
-      form.appendChild(input);
-    });
+    // ניקוי שדות דינמיים קודמים
+    form.querySelectorAll('input.dynamic').forEach(el => el.remove());
+
+    // שליחת העדפות רק אם נבחרו
+    const selected = document.querySelectorAll('.pref.active');
+    if (selected.length > 0) {
+      selected.forEach(p => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'entry.1975016513';
+        input.value = p.dataset.value;
+        input.className = 'dynamic';
+        form.appendChild(input);
+      });
+    }
 
     setTimeout(() => {
       alert('הפרטים נשלחו בהצלחה, תודה 🙏');
     }, 400);
 
-    return true; // ← קריטי! מאפשר שליחה
+    return true; // מאפשר שליחה ל-Google Forms
   }
 </script>
 </body>
