@@ -107,10 +107,6 @@
       line-height: 1.6;
     }
     
-    .notice-text strong {
-      color: #1e3a8a;
-    }
-    
     /* Progress */
     .progress-container {
       padding: 20px 32px;
@@ -191,8 +187,7 @@
     
     input[type="text"],
     input[type="tel"],
-    select,
-    textarea {
+    select {
       width: 100%;
       padding: 12px 16px;
       font-size: 1rem;
@@ -203,8 +198,7 @@
     }
     
     input:focus,
-    select:focus,
-    textarea:focus {
+    select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(61, 123, 253, 0.1);
@@ -217,11 +211,6 @@
       background-repeat: no-repeat;
       background-position: left 16px center;
       padding-left: 40px;
-    }
-    
-    textarea {
-      resize: vertical;
-      min-height: 80px;
     }
     
     /* Checkboxes */
@@ -270,12 +259,12 @@
     /* Radio */
     .radio-group {
       display: flex;
+      flex-direction: column;
       gap: 12px;
       margin-top: 8px;
     }
     
     .radio-option {
-      flex: 1;
       position: relative;
     }
     
@@ -286,11 +275,10 @@
     
     .radio-option label {
       display: block;
-      padding: 12px;
+      padding: 12px 16px;
       background: var(--surface);
       border: 2px solid var(--border);
       border-radius: 12px;
-      text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       margin: 0;
@@ -324,39 +312,24 @@
       margin-bottom: 8px;
     }
     
-    /* Alert */
-    .alert {
-      margin: 16px 0;
+    @keyframes slideDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 1000px; }
+    }
+    
+    /* Insurance Logic */
+    .insurance-container {
+      margin-top: 16px;
       padding: 16px;
+      background: #fef3c7;
       border-radius: 12px;
+      border: 2px dashed #f59e0b;
       display: none;
     }
     
-    .alert.show {
-      display: flex;
-      align-items: start;
-      gap: 12px;
+    .insurance-container.show {
+      display: block;
       animation: slideDown 0.3s;
-    }
-    
-    .alert-success {
-      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-      border-left: 4px solid var(--success);
-    }
-    
-    .alert-icon {
-      font-size: 1.5rem;
-    }
-    
-    .alert-title {
-      font-weight: 700;
-      color: #065f46;
-      margin-bottom: 4px;
-    }
-    
-    .alert-text {
-      font-size: 0.95rem;
-      color: #047857;
     }
     
     /* Consent Box */
@@ -390,14 +363,7 @@
     }
     
     .consent-text strong {
-      color: var(--text);
       font-weight: 700;
-    }
-    
-    .consent-text a {
-      color: var(--primary);
-      text-decoration: underline;
-      font-weight: 600;
     }
     
     .consent-text ul {
@@ -407,6 +373,12 @@
     
     .consent-text li {
       margin: 4px 0;
+    }
+    
+    .privacy-link {
+      color: var(--primary);
+      text-decoration: underline;
+      cursor: pointer;
     }
     
     /* Button */
@@ -466,11 +438,6 @@
       to { transform: rotate(360deg); }
     }
     
-    @keyframes slideDown {
-      from { opacity: 0; max-height: 0; }
-      to { opacity: 1; max-height: 1000px; }
-    }
-    
     .success-icon {
       font-size: 4rem;
       margin-bottom: 16px;
@@ -521,7 +488,6 @@
       .header h1 { font-size: 1.5rem; }
       .form-content { padding: 24px; max-height: none; }
       .notice { margin: 16px 24px; padding: 16px; }
-      .radio-group { flex-direction: column; }
     }
   </style>
 </head>
@@ -542,9 +508,9 @@
         <span>חשוב לדעת</span>
       </div>
       <div class="notice-text">
-        <strong>FlowMatch היא פלטפורמת התאמה בלבד</strong> ואינה ספקית שירותי בריאות.
-        איננו מאחסנים מידע רפואי או רשומות רפואיות.
-        המידע שאתם מוסרים משמש אך ורק ליצירת קשר ראשוני עם מטפלים מתאימים באזורכם.
+        FlowMatch היא פלטפורמת התאמה בלבד, ולא ספקית שירותי בריאות.
+        הפרטים שלכם יועברו למטפלים מתאימים באזורכם.
+        כל המידע נשמר למשך 30 יום בלבד.
       </div>
     </div>
     
@@ -560,50 +526,30 @@
     <div class="form-content">
       <form id="form">
         
-        <!-- פרטי קשר -->
+        <!-- פרטי ילד -->
         <div class="section">
           <h3 class="section-title">
-            <span>👤</span>
-            פרטי קשר
+            <span>👶</span>
+            פרטי הילד/ה
           </h3>
           
           <div class="form-group">
-            <label>שם פרטי (אופציונלי)</label>
-            <input type="text" id="childName" placeholder="שם הילד/ה" />
-            <div class="hint">עוזר לנו לפנות אליכם אישית</div>
+            <label>שם הילד/ה (אופציונלי)</label>
+            <input type="text" id="childName" placeholder="אפשר להשאיר ריק" />
           </div>
           
           <div class="form-group">
-            <label><span class="required">*</span> שם ההורה</label>
-            <input type="text" id="parentName" placeholder="השם שלך" required />
-          </div>
-          
-          <div class="form-group">
-            <label><span class="required">*</span> טלפון נייד</label>
-            <input type="tel" id="phone" placeholder="050-1234567" required />
-            <div class="hint">לתיאום מהיר ונוח</div>
-          </div>
-          
-          <div class="form-group">
-            <label><span class="required">*</span> גיל הילד/ה</label>
+            <label><span class="required">*</span> גיל</label>
             <select id="age" required>
-              <option value="">בחר/י קבוצת גיל</option>
-              <option value="0-3">0-3 שנים</option>
-              <option value="3-6">3-6 שנים</option>
-              <option value="6-9">6-9 שנים</option>
-              <option value="9-12">9-12 שנים</option>
-              <option value="12-16">12-16 שנים</option>
-              <option value="16+">16+ שנים</option>
+              <option value="">בחר/י גיל</option>
+              <option value="0-3">0-3</option>
+              <option value="3-6">3-6</option>
+              <option value="6-9">6-9</option>
+              <option value="9-12">9-12</option>
+              <option value="12-16">12-16</option>
+              <option value="16+">16+</option>
             </select>
           </div>
-        </div>
-        
-        <!-- מיקום -->
-        <div class="section">
-          <h3 class="section-title">
-            <span>📍</span>
-            מיקום וזמינות
-          </h3>
           
           <div class="form-group">
             <label><span class="required">*</span> אזור מגורים</label>
@@ -621,12 +567,13 @@
           </div>
           
           <div class="form-group">
-            <label>שפת טיפול</label>
+            <label>שפה מועדפת</label>
             <select id="language">
+              <option value="">לא משנה</option>
               <option value="עברית">עברית</option>
               <option value="אנגלית">אנגלית</option>
-              <option value="רוסית">רוסית</option>
               <option value="ערבית">ערבית</option>
+              <option value="רוסית">רוסית</option>
             </select>
           </div>
         </div>
@@ -634,12 +581,12 @@
         <!-- סוג טיפול -->
         <div class="section">
           <h3 class="section-title">
-            <span>🎯</span>
+            <span>💼</span>
             סוג הטיפול
           </h3>
           
           <div class="form-group">
-            <label><span class="required">*</span> איזה מקצוע מחפשים?</label>
+            <label><span class="required">*</span> מקצוע</label>
             <select id="therapy" required>
               <option value="">בחר/י מקצוע</option>
               <option value="קלינאות תקשורת">קלינאות תקשורת</option>
@@ -655,117 +602,122 @@
           </div>
           
           <div class="form-group">
-            <label>מה חשוב לכם במטפל/ת? (אופציונלי)</label>
-            <textarea 
-              id="difficulty" 
-              placeholder="לדוגמה: ניסיון עם ילדים בגיל בית ספר, קליניקה נגישה, זמינות בשעות אחה״צ..."
-              rows="3"
-            ></textarea>
-            <div class="hint">ספרו לנו על ההעדפות שלכם (ללא פרטים רפואיים)</div>
+            <label>מה חשוב לכם במטפל? (אופציונלי)</label>
+            <input type="text" id="difficulty" placeholder='לדוגמה: "ניסיון עם ילדים רגישים"' />
           </div>
         </div>
         
         <!-- העדפות -->
         <div class="section">
           <h3 class="section-title">
-            <span>⚙️</span>
+            <span>⭐</span>
             העדפות
           </h3>
           
           <div class="form-group">
-            <label>מה הכי חשוב לכם? (בחר/י מספר)</label>
+            <label>מה חשוב לכם? (בחר/י מספר)</label>
             <div class="checkbox-chips">
               <div class="checkbox-chip">
-                <input type="checkbox" id="p1" value="⚡ זמינות מהירה">
-                <label for="p1"><span>⚡</span> זמינות מהירה</label>
+                <input type="checkbox" id="pref1" value="⚡ זמינות מהירה">
+                <label for="pref1"><span>⚡</span> זמינות מהירה</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p2" value="💻 טיפול אונליין">
-                <label for="p2"><span>💻</span> טיפול אונליין</label>
+                <input type="checkbox" id="pref2" value="💻 טיפול אונליין">
+                <label for="pref2"><span>💻</span> טיפול אונליין</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p3" value="🏠 הגעה לבית">
-                <label for="p3"><span>🏠</span> הגעה לבית</label>
+                <input type="checkbox" id="pref3" value="🏠 הגעה לבית">
+                <label for="pref3"><span>🏠</span> הגעה לבית</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p4" value="📍 קליניקה נגישה">
-                <label for="p4"><span>📍</span> קליניקה נגישה</label>
+                <input type="checkbox" id="pref4" value="📍 קליניקה נגישה">
+                <label for="pref4"><span>📍</span> קליניקה נגישה</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p5" value="🎓 ניסיון עם חינוך מיוחד">
-                <label for="p5"><span>🎓</span> ניסיון עם חינוך מיוחד</label>
+                <input type="checkbox" id="pref5" value="🎓 ניסיון עם חינוך מיוחד">
+                <label for="pref5"><span>🎓</span> ניסיון עם חינוך מיוחד</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p6" value="💰 מחיר נוח">
-                <label for="p6"><span>💰</span> מחיר נוח</label>
+                <input type="checkbox" id="pref6" value="💰 מחיר נוח">
+                <label for="pref6"><span>💰</span> מחיר נוח</label>
               </div>
               <div class="checkbox-chip">
-                <input type="checkbox" id="p7" value="❤️ דגש רגשי">
-                <label for="p7"><span>❤️</span> דגש רגשי</label>
+                <input type="checkbox" id="pref7" value="❤️ דגש רגשי">
+                <label for="pref7"><span>❤️</span> דגש רגשי</label>
               </div>
             </div>
           </div>
           
           <div class="form-group">
-            <label>מתי תרצו להתחיל?</label>
-            <div class="radio-group">
-              <div class="radio-option">
-                <input type="radio" id="t1" name="timing" value="בהקדם" checked>
-                <label for="t1">בהקדם</label>
-              </div>
-              <div class="radio-option">
-                <input type="radio" id="t2" name="timing" value="בחודש הקרוב">
-                <label for="t2">בחודש הקרוב</label>
-              </div>
-              <div class="radio-option">
-                <input type="radio" id="t3" name="timing" value="גמיש">
-                <label for="t3">גמיש</label>
-              </div>
-            </div>
+            <label>מתי אתם זמינים?</label>
+            <select id="timing">
+              <option value="">לא משנה</option>
+              <option value="בהקדם האפשרי">בהקדם האפשרי</option>
+              <option value="תוך שבועיים">תוך שבועיים</option>
+              <option value="תוך חודש">תוך חודש</option>
+              <option value="גמיש">גמיש</option>
+            </select>
           </div>
           
           <div class="form-group">
             <label>משך מפגש מועדף</label>
             <select id="duration">
+              <option value="">לא משנה</option>
               <option value="45 דקות">45 דקות</option>
               <option value="60 דקות">60 דקות</option>
             </select>
           </div>
+        </div>
+        
+        <!-- פרטי קשר -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>📞</span>
+            פרטי קשר
+          </h3>
           
           <div class="form-group">
-            <label>📋 יש לכם ביטוח בריאות פרטי?</label>
-            <div class="radio-group">
-              <div class="radio-option">
-                <input type="radio" id="ins-yes" name="hasIns" value="כן">
-                <label for="ins-yes">כן</label>
-              </div>
-              <div class="radio-option">
-                <input type="radio" id="ins-no" name="hasIns" value="לא" checked>
-                <label for="ins-no">לא</label>
-              </div>
-            </div>
+            <label><span class="required">*</span> שם ההורה</label>
+            <input type="text" id="parentName" placeholder="שם מלא" required />
           </div>
           
-          <!-- הודעה אם יש ביטוח -->
-          <div class="alert alert-success" id="insAlert">
-            <div class="alert-icon">💡</div>
-            <div>
-              <div class="alert-title">מעולה!</div>
-              <div class="alert-text">אל תשכחו לממש את הזכויות הביטוחיות שלכם. נשמח לעזור לכם עם ההליך.</div>
-            </div>
+          <div class="form-group">
+            <label><span class="required">*</span> טלפון</label>
+            <input type="tel" id="phone" placeholder="050-1234567" required />
           </div>
+        </div>
+        
+        <!-- ביטוח -->
+        <div class="section">
+          <h3 class="section-title">
+            <span>💳</span>
+            ביטוח
+          </h3>
           
-          <!-- שאלה נוספת אם אין ביטוח -->
-          <div class="form-group" id="offerGroup">
-            <label>💼 תרצו שנציג ביטוח ייצור איתכם קשר?</label>
+          <div class="form-group">
+            <label><span class="required">*</span> יש לכם ביטוח משלים?</label>
             <div class="radio-group">
               <div class="radio-option">
-                <input type="radio" id="off-yes" name="wantOffer" value="כן, אשמח להצעה">
-                <label for="off-yes">כן, אשמח</label>
+                <input type="radio" id="ins1" name="insurance" value="כן" checked>
+                <label for="ins1">כן, יש לי ביטוח משלים</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="off-no" name="wantOffer" value="לא תודה (לא רלוונטי)" checked>
-                <label for="off-no">לא תודה</label>
+                <input type="radio" id="ins2" name="insurance" value="לא">
+                <label for="ins2">לא, אין לי ביטוח משלים</label>
+              </div>
+            </div>
+            
+            <div class="insurance-container" id="insuranceContainer">
+              <div class="sub-title">💡 רוצים הצעה לביטוח?</div>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="offer1" name="wantOffer" value="כן, אשמח להצעה" checked>
+                  <label for="offer1">כן, אשמח להצעה</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="offer2" name="wantOffer" value="לא תודה">
+                  <label for="offer2">לא תודה</label>
+                </div>
               </div>
             </div>
           </div>
@@ -778,10 +730,10 @@
             <div class="consent-text">
               <strong>אני מאשר/ת:</strong>
               <ul>
-                <li>FlowMatch היא פלטפורמת התאמה בלבד ואינה ספקית שירותי בריאות</li>
-                <li>המידע מועבר למטפלים רלוונטיים ומוחק מהמערכת תוך 30 יום</li>
-                <li>עליי להתייעץ עם איש/ת מקצוע מורשה לפני קבלת החלטות טיפוליות</li>
-                <li>קראתי את <a href="#privacy" onclick="showPrivacy(); return false;">מדיניות הפרטיות</a></li>
+                <li>FlowMatch היא פלטפורמת התאמה בלבד, לא ספקית שירותי בריאות</li>
+                <li>הפרטים שלי יועברו למטפלים מתאימים באזורי</li>
+                <li>המידע יישמר במערכת למשך 30 יום ואז יימחק אוטומטית</li>
+                <li>קראתי את <span class="privacy-link" onclick="showPrivacy()">מדיניות הפרטיות</span></li>
               </ul>
             </div>
           </label>
@@ -790,7 +742,7 @@
         <!-- Submit -->
         <button type="submit" class="btn" id="submitBtn">
           <span>🚀</span>
-          שליחה ומציאת התאמות
+          שלח/י בקשה להתאמה
         </button>
         
       </form>
@@ -798,15 +750,14 @@
       <!-- Loading -->
       <div class="loading" id="loading">
         <div class="spinner"></div>
-        <p>מעבד את הנתונים ומחפש התאמות...</p>
+        <p>שולח את הפרטים...</p>
       </div>
       
       <!-- Success -->
       <div class="success" id="success">
         <div class="success-icon">✅</div>
-        <h2>הטופס נשלח בהצלחה!</h2>
-        <p>תודה רבה! נחזור אליך בהקדם עם התאמות מדויקות.</p>
-        <p style="margin-top: 12px; font-size: 0.9rem;">המידע יישמר במערכת למשך 30 יום בלבד.</p>
+        <h2>תודה רבה!</h2>
+        <p>קיבלנו את הבקשה שלכם.<br>נחזור אליכם בהקדם עם המטפלים המתאימים ביותר!</p>
       </div>
     </div>
   </div>
@@ -818,45 +769,44 @@
   </div>
   
   <script>
-    // Config
-    // ✅ Google Form Config - FINAL & VERIFIED
+    // ✅ Google Form Config - VERIFIED from pre-filled link
     const CONFIG = {
       url: 'https://docs.google.com/forms/d/e/1FAIpQLSfSHU7BpvfY0ExW1JSk3QdXmPVof08EoWaGAiKaf2fiZmZ9BQ/formResponse',
       entries: {
-        childName: 'entry.1874755091',
-        parentName: 'entry.501366501',
-        phone: 'entry.2054465157',
-        age: 'entry.1479557102',
-        region: 'entry.1519777934',
-        language: 'entry.2044023557',
-        therapy: 'entry.921962628',
-        subSpecs: 'entry.792546451',
-        difficulty: 'entry.267290518',
-        preferences: 'entry.1975016513',  // Multi-select
-        timing: 'entry.1909228234',
-        duration: 'entry.1540815796',
-        hasInsurance: 'entry.1018715973',
-        wantOffer: 'entry.2043347683'
-        // NOTE: entry.171718301 removed - no longer collecting insurance details
+        childName: 'entry.1874755091',        // שי (optional)
+        age: 'entry.1479557102',              // 0-3
+        region: 'entry.1519777934',           // מרכז
+        language: 'entry.2044023557',         // עברית
+        therapy: 'entry.921962628',           // פיזיותרפיה
+        subSpecs: 'entry.792546451',          // טונוס שרירים (multi)
+        difficulty: 'entry.267290518',        // שי
+        preferences: 'entry.1975016513',      // 🏠 הגעה לבית (multi)
+        timing: 'entry.1909228234',           // שי
+        duration: 'entry.1540815796',         // 60 דקות
+        parentName: 'entry.501366501',        // שי
+        phone: 'entry.2054465157',            // שי
+        hasInsurance: 'entry.1018715973',     // לא
+        wantOffer: 'entry.2043347683'         // כן, אשמח להצעה
       }
     };
     
-    const SUBS = {
+    const SUBSPECS = {
       'קלינאות תקשורת': ['הפרעות היגוי', 'קשיי שפה', 'גמגום', 'עיכוב שפתי'],
       'ריפוי בעיסוק': ['ויסות חושי', 'מוטוריקה עדינה', 'מוטוריקה גסה', 'קשב וריכוז'],
-      'פיזיותרפיה': ['שיווי משקל', 'כוח שרירים', 'גמישות'],
+      'פיזיותרפיה': ['שיווי משקל', 'כוח שרירים', 'גמישות', 'טונוס שרירים (היפו/היפר)'],
       'טיפול רגשי': ['חרדות', 'קשיי הסתגלות', 'ויסות רגשי', 'התנהגות']
     };
     
-    let selectedSubs = [];
+    let selectedSubSpecs = [];
     
     // Progress
     function updateProgress() {
       const req = document.querySelectorAll('[required]');
       let filled = 0;
       req.forEach(el => {
-        if (el.type === 'checkbox') {
-          if (el.checked) filled++;
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          const name = el.name || el.id;
+          if (document.querySelector(`[name="${name}"]:checked`) || el.checked) filled++;
         } else if (el.value && el.value.trim()) {
           filled++;
         }
@@ -874,7 +824,7 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
     
-    // Privacy Policy Modal
+    // Privacy
     function showPrivacy() {
       alert(`מדיניות פרטיות - FlowMatch
 
@@ -901,17 +851,17 @@
 עדכון אחרון: דצמבר 2025`);
     }
     
-    // Sub-specs
+    // Dynamic subspecs
     document.getElementById('therapy').addEventListener('change', function() {
       const container = document.getElementById('subContainer');
       const chips = document.getElementById('subChips');
-      selectedSubs = [];
+      selectedSubSpecs = [];
       chips.innerHTML = '';
       
-      if (this.value && SUBS[this.value]) {
+      if (this.value && SUBSPECS[this.value]) {
         container.classList.add('show');
-        SUBS[this.value].forEach((spec, i) => {
-          const id = 's' + i;
+        SUBSPECS[this.value].forEach((spec, i) => {
+          const id = 'sub' + i;
           const div = document.createElement('div');
           div.className = 'checkbox-chip';
           div.innerHTML = `
@@ -920,9 +870,9 @@
           `;
           div.querySelector('input').addEventListener('change', function() {
             if (this.checked) {
-              selectedSubs.push(spec);
+              selectedSubSpecs.push(spec);
             } else {
-              selectedSubs = selectedSubs.filter(s => s !== spec);
+              selectedSubSpecs = selectedSubSpecs.filter(s => s !== spec);
             }
           });
           chips.appendChild(div);
@@ -933,17 +883,13 @@
     });
     
     // Insurance logic
-    document.querySelectorAll('[name="hasIns"]').forEach(radio => {
+    document.querySelectorAll('[name="insurance"]').forEach(radio => {
       radio.addEventListener('change', function() {
-        const alert = document.getElementById('insAlert');
-        const offerGroup = document.getElementById('offerGroup');
-        
-        if (this.value === 'כן') {
-          alert.classList.add('show');
-          offerGroup.style.display = 'none';
+        const container = document.getElementById('insuranceContainer');
+        if (this.value === 'לא') {
+          container.classList.add('show');
         } else {
-          alert.classList.remove('show');
-          offerGroup.style.display = 'block';
+          container.classList.remove('show');
         }
       });
     });
@@ -954,29 +900,7 @@
       
       // Validate consent
       if (!document.getElementById('consent').checked) {
-        showToast('אנא אשר/י את תנאי השימוש ומדיניות הפרטיות');
-        return;
-      }
-      
-      // Validate required
-      if (!document.getElementById('parentName').value.trim()) {
-        showToast('אנא הזן/י את שמך');
-        return;
-      }
-      if (!document.getElementById('phone').value.trim()) {
-        showToast('אנא הזן/י מספר טלפון');
-        return;
-      }
-      if (!document.getElementById('age').value) {
-        showToast('אנא בחר/י גיל הילד');
-        return;
-      }
-      if (!document.getElementById('region').value) {
-        showToast('אנא בחר/י אזור');
-        return;
-      }
-      if (!document.getElementById('therapy').value) {
-        showToast('אנא בחר/י מקצוע');
+        showToast('אנא אשר/י את תנאי השימוש');
         return;
       }
       
@@ -984,59 +908,47 @@
       document.querySelector('form').style.display = 'none';
       document.getElementById('loading').classList.add('show');
       
-      // Get preferences
-      const prefs = [];
-      document.querySelectorAll('.checkbox-chips input:checked').forEach(cb => {
-        if (cb.id.startsWith('p')) {
-          prefs.push(cb.value);
-        }
-      });
-      
       // Prepare data
       const formData = new FormData();
       formData.append(CONFIG.entries.childName, document.getElementById('childName').value);
-      formData.append(CONFIG.entries.parentName, document.getElementById('parentName').value);
-      formData.append(CONFIG.entries.phone, document.getElementById('phone').value);
       formData.append(CONFIG.entries.age, document.getElementById('age').value);
       formData.append(CONFIG.entries.region, document.getElementById('region').value);
       formData.append(CONFIG.entries.language, document.getElementById('language').value);
       formData.append(CONFIG.entries.therapy, document.getElementById('therapy').value);
-      formData.append(CONFIG.entries.subSpecs, selectedSubs.join(', ') || 'לא רלוונטי');
-      formData.append(CONFIG.entries.difficulty, document.getElementById('difficulty').value);
       
-      // Multi-select preferences
-      prefs.forEach(pref => {
-        formData.append(CONFIG.entries.preferences, pref);
+      // Sub-specializations (multi-select)
+      selectedSubSpecs.forEach(spec => {
+        formData.append(CONFIG.entries.subSpecs, spec);
       });
       
-      formData.append(CONFIG.entries.timing, document.querySelector('[name="timing"]:checked').value);
+      formData.append(CONFIG.entries.difficulty, document.getElementById('difficulty').value);
+      
+      // Preferences (multi-select)
+      document.querySelectorAll('[id^="pref"]:checked').forEach(cb => {
+        formData.append(CONFIG.entries.preferences, cb.value);
+      });
+      
+      formData.append(CONFIG.entries.timing, document.getElementById('timing').value);
       formData.append(CONFIG.entries.duration, document.getElementById('duration').value);
-      
-      // Insurance
-      const hasIns = document.querySelector('[name="hasIns"]:checked').value;
-      formData.append(CONFIG.entries.hasInsurance, hasIns);
-      
-      if (hasIns === 'כן') {
-        formData.append(CONFIG.entries.wantOffer, 'לא רלוונטי');
-      } else {
-        const wantOffer = document.querySelector('[name="wantOffer"]:checked').value;
-        formData.append(CONFIG.entries.wantOffer, wantOffer);
-      }
+      formData.append(CONFIG.entries.parentName, document.getElementById('parentName').value);
+      formData.append(CONFIG.entries.phone, document.getElementById('phone').value);
+      formData.append(CONFIG.entries.hasInsurance, document.querySelector('[name="insurance"]:checked').value);
+      formData.append(CONFIG.entries.wantOffer, document.querySelector('[name="wantOffer"]:checked').value);
       
       try {
-        // Create iframe for submission (better CORS handling)
+        // Create iframe for submission
         const iframe = document.createElement('iframe');
         iframe.name = 'hidden_iframe';
         iframe.style.display = 'none';
         document.body.appendChild(iframe);
         
-        // Create actual form element
+        // Create form element
         const actualForm = document.createElement('form');
         actualForm.action = CONFIG.url;
         actualForm.method = 'POST';
         actualForm.target = 'hidden_iframe';
         
-        // Add all form data as hidden inputs
+        // Add all data
         for (let [key, value] of formData.entries()) {
           const input = document.createElement('input');
           input.type = 'hidden';
@@ -1045,11 +957,11 @@
           actualForm.appendChild(input);
         }
         
-        // Submit form
+        // Submit
         document.body.appendChild(actualForm);
         actualForm.submit();
         
-        // Show success after delay
+        // Show success
         setTimeout(() => {
           document.getElementById('loading').classList.remove('show');
           document.getElementById('success').classList.add('show');
@@ -1066,7 +978,7 @@
     });
     
     // Track progress
-    document.querySelectorAll('input, select, textarea').forEach(el => {
+    document.querySelectorAll('input, select').forEach(el => {
       el.addEventListener('input', updateProgress);
       el.addEventListener('change', updateProgress);
     });
